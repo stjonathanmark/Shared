@@ -1,0 +1,11 @@
+<Solution>
+  <Folder Name="/Core/">
+    <Project Path="Shared/Shared.csproj" Id="964a5093-3bf1-4197-ab73-77e020f2226d" />
+  </Folder>
+  <Folder Name="/Data/">
+    <Project Path="Shared.Data/Shared.Data.csproj" Id="ec287840-6367-44be-aec3-62af4fb87fd2" />
+  </Folder>
+  <Folder Name="/Service/">
+    <Project Path="Shared.Dto/Shared.Dto.csproj" Id="8950ab8a-09b5-4bc2-bfbd-5b9fbe54e7c0" />
+  </Folder>
+</Solution>
