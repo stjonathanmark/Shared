@@ -5,6 +5,28 @@
   <Folder Name="/Data/">
     <Project Path="Shared.Data/Shared.Data.csproj" Id="ec287840-6367-44be-aec3-62af4fb87fd2" />
   </Folder>
+  <Folder Name="/Mailing/" />
+  <Folder Name="/Mailing/Core/">
+    <Project Path="Shared.Mailing/Shared.Mailing.csproj" Id="6293438b-13c4-4f6c-bdeb-4af0de077054" />
+  </Folder>
+  <Folder Name="/Mailing/Data/">
+    <Project Path="Shared.Mailing.Data/Shared.Mailing.Data.csproj" Id="91d7178e-7914-4be7-a0b0-901cbc6afd30" />
+  </Folder>
+  <Folder Name="/Mailing/Domain/">
+    <Project Path="Shared.Mailing.Entities/Shared.Mailing.Entities.csproj" Id="4c5b57e8-cf5e-4c16-af68-08255225a117" />
+    <Project Path="Shared.Mailing.Logic/Shared.Mailing.Logic.csproj" Id="11dfb417-e4f0-4772-aff3-ff6c1f09355e" />
+  </Folder>
+  <Folder Name="/Security/" />
+  <Folder Name="/Security/Core/">
+    <Project Path="Shared.Security/Shared.Security.csproj" Id="ef869cc9-2176-443f-b572-21949ed85014" />
+  </Folder>
+  <Folder Name="/Security/Data/">
+    <Project Path="Shared.Security.Data/Shared.Security.Data.csproj" Id="7a48ee2f-25f0-4156-a1e6-dde01a0d3d80" />
+  </Folder>
+  <Folder Name="/Security/Domain/">
+    <Project Path="Shared.Security.Entities/Shared.Security.Entities.csproj" Id="130febd8-4a76-443a-a935-edcfbf843b20" />
+    <Project Path="Shared.Security.Logic/Shared.Security.Logic.csproj" Id="0e321944-33b6-40f5-a9a0-b5107013f433" />
+  </Folder>
   <Folder Name="/Service/">
     <Project Path="Shared.Dto/Shared.Dto.csproj" Id="8950ab8a-09b5-4bc2-bfbd-5b9fbe54e7c0" />
   </Folder>
