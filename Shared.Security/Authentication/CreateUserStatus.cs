@@ -1,13 +1,13 @@
-﻿namespace Shared.Security;
+﻿namespace Shared.Security.Authentication;
 
-public enum RegistrationStatus
+public enum CreateUserStatus
 {
-    NotRegistered,
+    NotCreated,
     InvalidUsernameFormat,
     UsernameAlreadyExists,
     InvalidEmailFormat,
     EmailAlreadyExists,
     Error,
     InvalidPasswordFormat,
-    Registered
+    Created
 }

@@ -1,4 +1,4 @@
-﻿namespace Shared.Security;
+﻿namespace Shared.Security.Authentication;
 
 public enum AuthenticationStatus
 {

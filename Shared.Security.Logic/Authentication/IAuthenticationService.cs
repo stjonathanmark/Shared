@@ -2,7 +2,7 @@
 
 public interface IAuthenticationService<TUser, TKey>
 {
-    Task<RegistrationResult> RegisterUserAsync(TUser user, string password, string? role = null);
+    Task<CreateUserResult> CreateUserAsync(TUser user, string password, string? role = null);
 
     Task<ConfirmEmailResult> ConfirmEmailAsync(TKey userId, string token);
 

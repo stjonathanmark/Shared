@@ -22,9 +22,9 @@ public class AuthenticationService<TUser, TKey> : IAuthenticationService<TUser, 
         smtp = emailService;
     }
 
-    public async Task<RegistrationResult> RegisterUserAsync(TUser user, string password, string? role = null)
+    public async Task<CreateUserResult> CreateUserAsync(TUser user, string password, string? role = null)
     {
-        var result = new RegistrationResult();
+        var result = new CreateUserResult();
 
         try
         {
@@ -37,27 +37,29 @@ public class AuthenticationService<TUser, TKey> : IAuthenticationService<TUser, 
                 foreach (var error in regResult.Errors)
                     result.Data.Add(error.Code, error.Description);
 
-                List<string> invalidPwdFormatErrCodes = [
-                    IdentityErrors.PasswordTooShort,
-                    IdentityErrors.PasswordRequiresUniqueChar,
-                    IdentityErrors.PasswordRequiresNonAlphanumeric,
-                    IdentityErrors.PasswordRequiresDigit,
-                    IdentityErrors.PasswordRequiresLower,
-                    IdentityErrors.PasswordRequiresUpper
-                ];
 
-                if (result.Data.ContainsKey(IdentityErrors.DuplicateUserName))
-                    result.Status = RegistrationStatus.UsernameAlreadyExists;
-                else if (result.Data.ContainsKey(IdentityErrors.InvalidUserName))
-                    result.Status = RegistrationStatus.InvalidUsernameFormat;
-                else if (result.Data.ContainsKey(IdentityErrors.DuplicateEmail))
-                    result.Status = RegistrationStatus.EmailAlreadyExists;
-                else if (result.Data.ContainsKey(IdentityErrors.InvalidEmail))
-                    result.Status = RegistrationStatus.InvalidEmailFormat;
-                else if (result.Data.Any(d => invalidPwdFormatErrCodes.Contains(d.Key)))
-                    result.Status = RegistrationStatus.InvalidPasswordFormat;
-                else
-                    result.Status = RegistrationStatus.Error;
+                Dictionary<CreateUserStatus, string> statusToError = new() {
+                    { CreateUserStatus.UsernameAlreadyExists, IdentityErrors.DuplicateUserName },
+                    { CreateUserStatus.InvalidUsernameFormat, IdentityErrors.InvalidUserName },
+                    { CreateUserStatus.EmailAlreadyExists, IdentityErrors.DuplicateEmail },
+                    { CreateUserStatus.InvalidEmailFormat, IdentityErrors.InvalidEmail },
+                    { CreateUserStatus.InvalidPasswordFormat, GetJoinedInvalidPasswordFormatErrors() },
+                };
+
+                result.Status = CreateUserStatus.Error;
+
+                foreach (var kvPair in statusToError)
+                {
+                    var matchFound = kvPair.Key == CreateUserStatus.InvalidPasswordFormat
+                        ? result.Data.Any(d => kvPair.Value.Contains(d.Key))
+                        : result.Data.ContainsKey(kvPair.Value);
+
+                        if (matchFound)
+                        {
+                            result.Status = kvPair.Key;
+                            break;
+                        }
+                }
             }
 
             var addRoleResult = await userMgr.AddToRoleAsync(user, authOpts.DefaultRole ?? role ?? "User");
@@ -67,19 +69,19 @@ public class AuthenticationService<TUser, TKey> : IAuthenticationService<TUser, 
                 foreach (var error in addRoleResult.Errors)
                     result.Data.Add(error.Code, error.Description);
 
-                result.Status = RegistrationStatus.Error;
+                result.Status = CreateUserStatus.Error;
             }
 
             if (result.Successful && authOpts.RequireEmailConfirmation)
                 await SendConfirmationEmailAsync(user);
 
-            result.Status = RegistrationStatus.Registered;
+            result.Status = CreateUserStatus.Created;
             result.Message = "User was registered successfuly.";
         }
         catch
         {
             result.Successful = false;
-            result.Status = RegistrationStatus.Error;
+            result.Status = CreateUserStatus.Error;
             return result;
         }
 
@@ -103,9 +105,7 @@ public class AuthenticationService<TUser, TKey> : IAuthenticationService<TUser, 
                 return result;
             }
 
-            var base64UrlDecodedTokenStr = WebUtility.UrlDecode(token);
-            var tokenBytes = Convert.FromBase64String(base64UrlDecodedTokenStr);
-            var originalToken = Encoding.UTF8.GetString(tokenBytes);
+            var originalToken = DecodeToken(token);
 
             var confirmEmailResult = await userMgr.ConfirmEmailAsync(user, originalToken);
 
@@ -209,16 +209,9 @@ public class AuthenticationService<TUser, TKey> : IAuthenticationService<TUser, 
                 foreach (var error in changePwdResult.Errors)
                     result.Data.Add(error.Code, error.Description);
 
-                List<string> invalidPwdFormatErrCodes = [
-                    IdentityErrors.PasswordTooShort,
-                    IdentityErrors.PasswordRequiresUniqueChar,
-                    IdentityErrors.PasswordRequiresNonAlphanumeric,
-                    IdentityErrors.PasswordRequiresDigit,
-                    IdentityErrors.PasswordRequiresLower,
-                    IdentityErrors.PasswordRequiresUpper
-                ];
+                var pwdFormatErrs = GetJoinedInvalidPasswordFormatErrors();
 
-                if (result.Data.Any(d => invalidPwdFormatErrCodes.Contains(d.Key)))
+                if (result.Data.Any(d => pwdFormatErrs.Contains(d.Key)))
                     result.Status = ChangePasswordStatus.InvalidFormat;
                 else if (result.Data.ContainsKey(IdentityErrors.PasswordMismatch))
                     result.Status = ChangePasswordStatus.InvalidOldPassword;
@@ -261,11 +254,9 @@ public class AuthenticationService<TUser, TKey> : IAuthenticationService<TUser, 
 
             var token = await userMgr.GeneratePasswordResetTokenAsync(user!);
 
-            var tokenBytes = Encoding.UTF8.GetBytes(token);
-            var base64TokenStr = Convert.ToBase64String(tokenBytes);
-            var urlEncodedToken = WebUtility.UrlEncode(base64TokenStr);
+            var encodedToken = EncodeToken(token);
 
-            var url = string.Format(authOpts.RecoverPasswordUrl, user!.Id, urlEncodedToken);
+            var url = string.Format(authOpts.RecoverPasswordUrl, user!.Id, encodedToken);
 
             var template = smtp.GetEmailTemplate(authOpts.RecoverPasswordTemplateName);
             template.AddReplacementValue("url", url);
@@ -304,9 +295,7 @@ public class AuthenticationService<TUser, TKey> : IAuthenticationService<TUser, 
                 return result;
             }
 
-            var base64UrlDecodedTokenStr = WebUtility.UrlDecode(token);
-            var tokenBytes = Convert.FromBase64String(base64UrlDecodedTokenStr);
-            var originalToken = Encoding.UTF8.GetString(tokenBytes);
+            var originalToken = DecodeToken(token);
 
             var resetPwdResult = await userMgr.ResetPasswordAsync(user, originalToken, newPassword);
 
@@ -315,16 +304,10 @@ public class AuthenticationService<TUser, TKey> : IAuthenticationService<TUser, 
                 foreach (var error in resetPwdResult.Errors)
                     result.Data.Add(error.Code, error.Description);
 
-                List<string> invalidPwdFormatErrCodes = [
-                    IdentityErrors.PasswordTooShort,
-                    IdentityErrors.PasswordRequiresUniqueChar,
-                    IdentityErrors.PasswordRequiresNonAlphanumeric,
-                    IdentityErrors.PasswordRequiresDigit,
-                    IdentityErrors.PasswordRequiresLower,
-                    IdentityErrors.PasswordRequiresUpper
-                ];
 
-                if (result.Data.Any(d => invalidPwdFormatErrCodes.Contains(d.Key)))
+                var pwdFormatErrs = GetJoinedInvalidPasswordFormatErrors();
+
+                if (result.Data.Any(d => pwdFormatErrs.Contains(d.Key)))
                     result.Status = ResetPasswordStatus.InvalidFormat;
                 else if (result.Data.ContainsKey(IdentityErrors.InvalidToken))
                     result.Status = ResetPasswordStatus.InvalidToken;
@@ -383,19 +366,45 @@ public class AuthenticationService<TUser, TKey> : IAuthenticationService<TUser, 
         return result;
     }
 
-    protected async Task SendConfirmationEmailAsync(TUser user)
+    protected virtual async Task SendConfirmationEmailAsync(TUser user)
     {
         var token = await userMgr.GenerateEmailConfirmationTokenAsync(user);
 
-        var tokenBytes = Encoding.UTF8.GetBytes(token);
-        var base64TokenStr = Convert.ToBase64String(tokenBytes);
-        var urlEncodedToken = WebUtility.UrlEncode(base64TokenStr);
+        var encodedToken = EncodeToken(token);
 
-        var url = string.Format(authOpts.EmailConfirmationUrl, user.Id, urlEncodedToken);
+        var url = string.Format(authOpts.EmailConfirmationUrl, user.Id, encodedToken);
 
         var template = smtp.GetEmailTemplate(authOpts.EmailConfirmationTemplateName);
         template.AddReplacementValue("url", url);
 
         smtp.Send(template);
+    }
+
+    protected virtual string EncodeToken(string token)
+    {
+        var tokenBytes = Encoding.UTF8.GetBytes(token);
+        var base64TokenStr = Convert.ToBase64String(tokenBytes);
+        return WebUtility.UrlEncode(base64TokenStr);
+    }
+
+    protected virtual string DecodeToken(string token)
+    {
+        var base64UrlTokenStr = WebUtility.UrlDecode(token);
+        var tokenBytes = Convert.FromBase64String(base64UrlTokenStr);
+        return Encoding.UTF8.GetString(tokenBytes);
+    }
+
+    protected virtual string GetJoinedInvalidPasswordFormatErrors()
+    {
+        List<string> invalidPwdFormatErrCodes = [
+            IdentityErrors.PasswordTooShort,
+            IdentityErrors.PasswordRequiresUniqueChar,
+            IdentityErrors.PasswordRequiresNonAlphanumeric,
+            IdentityErrors.PasswordRequiresDigit,
+            IdentityErrors.PasswordRequiresLower,
+            IdentityErrors.PasswordRequiresUpper
+        ];
+
+        return string.Join(',', invalidPwdFormatErrCodes);
     }
 } 
