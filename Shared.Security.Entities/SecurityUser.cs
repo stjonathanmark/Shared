@@ -1,7 +1,4 @@
-﻿using Microsoft.AspNetCore.Identity;
+﻿namespace Shared.Security;
 
-namespace Shared.Security;
-
-public class SecurityUser<TKey> : IdentityUser<TKey>
-    where TKey : struct, IEquatable<TKey>
+public class SecurityUser : BaseUser<string>
 { }

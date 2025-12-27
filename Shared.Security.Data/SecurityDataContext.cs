@@ -1,15 +1,15 @@
-﻿using Microsoft.AspNetCore.Identity;
-using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
+﻿using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
+using Shared.Security.Authorization;
 
 namespace Shared.Security.Data;
 
-public class SecurityDataContext<TUser, TRole, TId> : IdentityDbContext<TUser, TRole, TId>
-    where TId : struct, IEquatable<TId>
-    where TUser : IdentityUser<TId>
-    where TRole : IdentityRole<TId>
+public class SecurityDataContext<TUser, TRole, Tkey> : IdentityDbContext<TUser, TRole, Tkey>
+    where Tkey : IEquatable<Tkey>
+    where TUser : BaseUser<Tkey>
+    where TRole : BaseRole<Tkey>
 {
-    public SecurityDataContext(DbContextOptions<SecurityDataContext<TUser, TRole, TId>> options)
+    public SecurityDataContext(DbContextOptions<SecurityDataContext<TUser, TRole, Tkey>> options)
         : base(options)
     { }
 }

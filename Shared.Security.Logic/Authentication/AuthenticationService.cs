@@ -8,7 +8,7 @@ namespace Shared.Security.Authentication;
 
 public class AuthenticationService<TUser, TKey> : IAuthenticationService<TUser, TKey>
     where TKey : struct, IEquatable<TKey>
-    where TUser : SecurityUser<TKey>
+    where TUser : BaseUser<TKey>
 
 {
     private readonly UserManager<TUser> userMgr;
@@ -32,7 +32,7 @@ public class AuthenticationService<TUser, TKey> : IAuthenticationService<TUser, 
 
             if (!(result.Successful = regResult.Succeeded))
             {
-                result.Message = "Error(s) occurred registering user";
+                result.Message = "Error(s) occurred creating user";
 
                 foreach (var error in regResult.Errors)
                     result.Data.Add(error.Code, error.Description);
@@ -76,7 +76,7 @@ public class AuthenticationService<TUser, TKey> : IAuthenticationService<TUser, 
                 await SendConfirmationEmailAsync(user);
 
             result.Status = CreateUserStatus.Created;
-            result.Message = "User was registered successfuly.";
+            result.Message = "User was created successfuly.";
         }
         catch
         {
