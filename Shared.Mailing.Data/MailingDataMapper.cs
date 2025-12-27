@@ -5,6 +5,12 @@ namespace Shared.Mailing.Data;
 
 public static class MailingDataMapper
 {
+    public static void Map(ModelBuilder modelBuilder)
+    {
+        Map(modelBuilder.Entity<EmailTemplate>());
+        Map(modelBuilder.Entity<EmailTemplateReplacement>());
+    }
+
     public static void Map(EntityTypeBuilder<EmailTemplate> entity, string tableName = "EmailTemplates", string schemaName = "dbo")
     {
         entity.ToTable(tableName, schemaName);
@@ -23,5 +29,18 @@ public static class MailingDataMapper
         entity.Property(e => e.HtmlBody).IsRequired(false);
         entity.Property(e => e.TextBody).IsRequired(false);
 
+        entity.HasMany(e => e.Replacements).WithOne(e => e.Template).HasForeignKey(e => e.EmailTemplateId).OnDelete(DeleteBehavior.Restrict);
+
+    }
+
+    public static void Map(EntityTypeBuilder<EmailTemplateReplacement> entity, string tableName = "EmailTemplateReplacements", string schemaName = "dbo")
+    {
+        entity.ToTable(tableName, schemaName);
+        entity.HasKey(e => e.Id);
+
+        entity.HasIndex(["EmailTemplateId", "Key"]).IsUnique();
+
+        entity.Property(e => e.Key).HasMaxLength(75).IsRequired();
+        entity.Property(e => e.Value).IsRequired();
     }
 }

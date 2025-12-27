@@ -10,4 +10,6 @@ public class MailingUnitOfWork : BaseUnitOfWork, IMailingUnitOfWork
     { }
 
     public IEmailTemplateRepository EmailTemplates => GetRepository<IEmailTemplateRepository, EmailTemplate>();
+
+    public IEmailTemplateReplacementRepository EmailTemplateReplacements => GetRepository<IEmailTemplateReplacementRepository, EmailTemplateReplacement>();
 }

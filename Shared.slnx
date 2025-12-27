@@ -16,6 +16,9 @@
     <Project Path="Shared.Mailing.Entities/Shared.Mailing.Entities.csproj" Id="4c5b57e8-cf5e-4c16-af68-08255225a117" />
     <Project Path="Shared.Mailing.Logic/Shared.Mailing.Logic.csproj" Id="11dfb417-e4f0-4772-aff3-ff6c1f09355e" />
   </Folder>
+  <Folder Name="/Mailing/Service/">
+    <Project Path="Shared.Mailing.Dto/Shared.Mailing.Dto.csproj" Id="357985d0-baca-4711-a67e-81cf39da2937" />
+  </Folder>
   <Folder Name="/Security/" />
   <Folder Name="/Security/Core/">
     <Project Path="Shared.Security/Shared.Security.csproj" Id="ef869cc9-2176-443f-b572-21949ed85014" />

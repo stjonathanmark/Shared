@@ -4,7 +4,7 @@ using System.Text.RegularExpressions;
 
 namespace Shared.Mailing;
 
-public class EmailTemplate : BaseEntity<int>, IEmailTemplate
+public class EmailTemplate : BaseEmailTemplate, IEmailTemplate
 {
     private readonly IDictionary<string, string> replacements = new Dictionary<string, string>();
     private readonly IList<LinkedResource> resources = [];
@@ -16,23 +16,7 @@ public class EmailTemplate : BaseEntity<int>, IEmailTemplate
         AssignOptions(options);
     }
 
-    public string Name { get; set; } = string.Empty;
-
-    public string FromAddress { get; set; } = string.Empty;
-
-    public string FromDisplayName { get; set; } = string.Empty;
-
-    public string Subject { get; set; } = string.Empty;
-
     public IDictionary<string, string> ToAddresses { get; set; } = new Dictionary<string, string>();
-
-    public string HtmlBody { get; set; } = string.Empty;
-
-    public string TextBody { get; set; } = string.Empty;
-
-    public string PlaceHolderBeginning { get; set; } = "{{";
-
-    public string PlaceHolderEnding { get; set; } = "}}";
 
     public List<EmailTemplateReplacement> Replacements { get; set; } = [];
 
@@ -219,6 +203,9 @@ public class EmailTemplate : BaseEntity<int>, IEmailTemplate
 
     protected virtual string FillPlaceHolders(string body)
     {
+        if (Replacements?.Count > 0)
+            AddReplacementValues(Replacements.ToDictionary(r => r.Key, r => r.Value));
+
         if (replacements.Any())
         {
             foreach (var replacement in replacements)

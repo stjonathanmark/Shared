@@ -6,4 +6,6 @@ namespace Shared.Mailing.Data;
 public interface IMailingUnitOfWork : IBaseUnitOfWork
 {
     IEmailTemplateRepository EmailTemplates { get; }
+
+    IEmailTemplateReplacementRepository EmailTemplateReplacements { get; }
 }

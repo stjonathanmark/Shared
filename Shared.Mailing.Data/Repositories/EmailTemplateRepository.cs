@@ -3,9 +3,9 @@ using Shared.Data.Repositories;
 
 namespace Shared.Mailing.Data.Repositories;
 
-public class EmailTemplateRepository : BaseEntityRepository<EmailTemplate, int>, IEmailTemplateRepository
+public class EmailTemplateRepository : BaseEntityRepository<EmailTemplate, uint>, IEmailTemplateRepository
 {
-    public EmailTemplateRepository(MailingDataContext context) 
+    public EmailTemplateRepository(DbContext context) 
         : base(context)
     { }
 

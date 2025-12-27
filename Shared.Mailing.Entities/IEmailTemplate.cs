@@ -16,6 +16,8 @@ public interface IEmailTemplate
 
     string TextBody { set; }
 
+    List<EmailTemplateReplacement> Replacements { get; set; }
+
     void AssignOptions(EmailTemplateOptions options);
 
     void AddImage(string filePath, string imageMediaType, string replacementKey);
