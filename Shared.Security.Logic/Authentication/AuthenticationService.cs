@@ -7,7 +7,7 @@ using System.Text;
 namespace Shared.Security.Authentication;
 
 public class AuthenticationService<TUser, TKey> : IAuthenticationService<TUser, TKey>
-    where TKey : struct, IEquatable<TKey>
+    where TKey : IEquatable<TKey>
     where TUser : BaseUser<TKey>
 
 {

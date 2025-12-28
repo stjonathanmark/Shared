@@ -3,8 +3,8 @@
 namespace Shared.Security.Authentication;
 
 public interface IJwtService<TUser, TKey>
-    where TKey : struct, IEquatable<TKey>
-    where TUser : SecurityUser<TKey>
+    where TKey : IEquatable<TKey>
+    where TUser : BaseUser<TKey>
 {
     event Action<TUser, ClaimsIdentity> AddOptionalUserClaims;
 

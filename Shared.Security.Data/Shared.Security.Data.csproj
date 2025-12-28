@@ -12,6 +12,8 @@
 
   <ItemGroup>
     <ProjectReference Include="..\Shared.Data\Shared.Data.csproj" />
+    <ProjectReference Include="..\Shared.Mailing.Data\Shared.Mailing.Data.csproj" />
+    <ProjectReference Include="..\Shared.Mailing.Entities\Shared.Mailing.Entities.csproj" />
     <ProjectReference Include="..\Shared.Security.Entities\Shared.Security.Entities.csproj" />
     <ProjectReference Include="..\Shared.Security\Shared.Security.csproj" />
   </ItemGroup>

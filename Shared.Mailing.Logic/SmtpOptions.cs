@@ -1,7 +1,9 @@
 ﻿namespace Shared.Mailing;
 
-public class SmtpOptions : EmailOptions
+public class SmtpOptions : BaseEmailOptions
 {
+    public const string SectionName = "Mailing:Smtp";
+
     public string Host { get; set; } = string.Empty;
 
     public int Port { get; set; } = 25;

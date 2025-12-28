@@ -5,10 +5,10 @@ namespace Shared.Mailing;
 
 public abstract class BaseEmailService : IBaseEmailService
 {
-    private readonly EmailOptions emailOpts;
+    private readonly BaseEmailOptions emailOpts;
     private readonly IMailingUnitOfWork mailingUow;
 
-    public BaseEmailService(IOptions<EmailOptions> emailOptions, IMailingUnitOfWork mailingUnitOfWork)
+    public BaseEmailService(IOptions<BaseEmailOptions> emailOptions, IMailingUnitOfWork mailingUnitOfWork)
     {
         emailOpts = emailOptions.Value;
         mailingUow = mailingUnitOfWork;

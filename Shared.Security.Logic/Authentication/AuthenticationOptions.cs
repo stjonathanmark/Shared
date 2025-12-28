@@ -2,7 +2,7 @@
 
 public class AuthenticationOptions
 {
-    public const string SectionName = "Authentication";
+    public const string SectionName = "Shared:Security:Authentication";
     
     public string DefaultRole { get; set; } = "User";
 

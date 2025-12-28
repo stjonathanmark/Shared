@@ -9,8 +9,8 @@ using System.Text;
 namespace Shared.Security.Authentication
 {
     public class JwtService<TUser, TKey> : IJwtService<TUser, TKey>
-        where TKey : struct, IEquatable<TKey>
-        where TUser : SecurityUser<TKey>
+        where TKey : IEquatable<TKey>
+        where TUser : BaseUser<TKey>
     {
         private readonly JwtOptions jwtOpts;
         private readonly UserManager<TUser> userMgr;

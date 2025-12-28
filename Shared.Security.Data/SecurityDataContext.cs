@@ -12,4 +12,9 @@ public class SecurityDataContext<TUser, TRole, Tkey> : IdentityDbContext<TUser, 
     public SecurityDataContext(DbContextOptions<SecurityDataContext<TUser, TRole, Tkey>> options)
         : base(options)
     { }
+
+    protected override void OnModelCreating(ModelBuilder builder)
+    {
+        base.OnModelCreating(builder);
+    }
 }

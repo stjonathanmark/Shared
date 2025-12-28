@@ -2,6 +2,8 @@
 
 public class JwtOptions
 {
+    public const string SectionName = "Shared:Security:Jwt";
+
     public string Issuer { get; set; } = string.Empty;
 
     public IList<string> Audiences { get; set; } = [];

@@ -1,6 +1,6 @@
 ﻿namespace Shared.Mailing;
 
-public class EmailOptions
+public abstract class BaseEmailOptions
 {
     public EmailTemplateOptions Template { get; set; } = new();
 
