@@ -12,9 +12,7 @@ public class AuthenticationOptions
 
     public string EmailConfirmationUrl { get; set; } = "https://localhost/confirm-email?userId={0}&token={1}";
 
-    public string RecoverPasswordTemplateName { get; set; } = "recover-password";
-
-    public string RecoverPasswordUrl { get; set; } = "https://localhost/recover-password?userId={0}&token={1}";
+    public PasswordOptions Password { get; set; } = new();
 }
 
 

@@ -256,9 +256,9 @@ public class AuthenticationService<TUser, TKey> : IAuthenticationService<TUser, 
 
             var encodedToken = EncodeToken(token);
 
-            var url = string.Format(authOpts.RecoverPasswordUrl, user!.Id, encodedToken);
+            var url = string.Format(authOpts.Password.RecoverPasswordUrl, user!.Id, encodedToken);
 
-            var template = smtp.GetEmailTemplate(authOpts.RecoverPasswordTemplateName);
+            var template = smtp.GetEmailTemplate(authOpts.Password.RecoverPasswordTemplateName);
             template.AddReplacementValue("url", url);
 
             smtp.Send(template);
