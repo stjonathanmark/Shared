@@ -5,10 +5,9 @@ namespace Shared.Security.Data;
 
 public static class SecurityMapper
 {
-    public static void Map<TUserProfile, TId, TUserId>(EntityTypeBuilder<TUserProfile> entity, string tableName = "UserProfiles", string schemaName = "dbo")
-        where TUserProfile : BaseUserProfile<TId, TUserId>
-        where TId : struct
-        where TUserId : IEquatable<TUserId>
+    public static void Map<TUserProfile, TUserId>(EntityTypeBuilder<TUserProfile> entity, string tableName = "UserProfiles", string schemaName = "dbo")
+        where TUserProfile : BaseUserProfile<TUserId>
+        where TUserId : struct, IEquatable<TUserId>
     {
         entity.ToTable(tableName, schemaName);
 

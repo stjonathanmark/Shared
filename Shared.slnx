@@ -5,6 +5,16 @@
   <Folder Name="/Data/">
     <Project Path="Shared.Data/Shared.Data.csproj" Id="ec287840-6367-44be-aec3-62af4fb87fd2" />
   </Folder>
+  <Folder Name="/Location/" />
+  <Folder Name="/Location/Core/">
+    <Project Path="Shared.Location/Shared.Location.csproj" Id="4cddb02f-9883-4958-a2b9-cda1b3961947" />
+  </Folder>
+  <Folder Name="/Location/Data/">
+    <Project Path="Shared.Location.Data/Shared.Location.Data.csproj" Id="c1f25795-98e2-415e-83d1-aceac38f4a4b" />
+  </Folder>
+  <Folder Name="/Location/Domain/">
+    <Project Path="Shared.Location.Entities/Shared.Location.Entities.csproj" Id="9678d11b-5a10-4956-80e1-31bd34b66b9a" />
+  </Folder>
   <Folder Name="/Mailing/" />
   <Folder Name="/Mailing/Core/">
     <Project Path="Shared.Mailing/Shared.Mailing.csproj" Id="6293438b-13c4-4f6c-bdeb-4af0de077054" />
@@ -19,6 +29,18 @@
   <Folder Name="/Mailing/Service/">
     <Project Path="Shared.Mailing.Dto/Shared.Mailing.Dto.csproj" Id="357985d0-baca-4711-a67e-81cf39da2937" />
   </Folder>
+  <Folder Name="/Payments/" />
+  <Folder Name="/Payments/Core/">
+    <Project Path="Shared.Payements/Shared.Payements.csproj" Id="fc06e472-977f-4258-aef2-7287714b455a" />
+  </Folder>
+  <Folder Name="/Payments/Data/">
+    <Project Path="Shared.Payments.Data/Shared.Payments.Data.csproj" Id="6bc67900-f833-420f-9f42-e1d1d0eb576f" />
+  </Folder>
+  <Folder Name="/Payments/Domain/">
+    <Project Path="Shared.Payments.Entities/Shared.Payments.Entities.csproj" Id="8c60afad-fd8a-44ef-b7ce-c2544fd9c46d" />
+    <Project Path="Shared.Payments.Logic/Shared.Payments.Logic.csproj" Id="e52ae1e9-9667-4acf-9713-ab0a400dc56f" />
+  </Folder>
+  <Folder Name="/Payments/Service/" />
   <Folder Name="/Security/" />
   <Folder Name="/Security/Core/">
     <Project Path="Shared.Security/Shared.Security.csproj" Id="ef869cc9-2176-443f-b572-21949ed85014" />

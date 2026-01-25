@@ -33,7 +33,7 @@ public abstract class BaseEmailService : IBaseEmailService
         {
             EmailTemplateLocation.FileSystem => await GetFileBasedEmailTemplateAsync(subject, templateName),
             EmailTemplateLocation.Database => await GetDatabaseEmailTemplate(templateName),
-            _ => throw new NotSupportedException($"The email template in '{emailOpts.Template.Location}' is either not or implemented supported."),
+            _ => throw new NotSupportedException($"The email template in '{emailOpts.Template.Location}' is either not implemented or supported."),
         };
     }
 
