@@ -1,6 +1,6 @@
 ﻿using Shared.Location;
 
-namespace Shared.Payments.Entities;
+namespace Shared.Payments;
 
 public interface IPayerAddress
 {

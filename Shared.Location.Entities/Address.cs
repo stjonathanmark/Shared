@@ -6,3 +6,9 @@ public class Address : BaseAddress
 
     public Country Country { get; set; } = new();
 }
+
+public class Address<TAddresseeId>
+    where TAddresseeId : struct, IEquatable<TAddresseeId>
+{
+    public TAddresseeId AddresseeId { get; set; }
+}

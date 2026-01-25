@@ -2,8 +2,6 @@
 
 namespace Shared.Security;
 
-public class SecurityUserAddress<TUserId> : Address
+public class SecurityUserAddress<TUserId> : Address<TUserId>
     where TUserId : struct, IEquatable<TUserId>
-{
-    public TUserId UserId { get; set; }
-}
+{ }

@@ -1,6 +1,6 @@
 ﻿using Shared.Payments.Entities;
 
-namespace Shared.Payments.Logic;
+namespace Shared.Payments;
 
 public interface IPaymentsService<TUserId, TPayerProfile, TPayerAddress>
     where TUserId : IEquatable<TUserId>

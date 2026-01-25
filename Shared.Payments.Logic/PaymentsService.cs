@@ -2,7 +2,7 @@
 using Shared.Payments.Entities;
 using Stripe;
 
-namespace Shared.Payments.Logic;
+namespace Shared.Payments;
 
 public class PaymentsService<TUserId, TPayerProfile, TPayerAddress> : IPaymentsService<TUserId, TPayerProfile, TPayerAddress>
     where TUserId : IEquatable<TUserId>
@@ -15,10 +15,10 @@ public class PaymentsService<TUserId, TPayerProfile, TPayerAddress> : IPaymentsS
     public PaymentsService(IOptions<PaymentsOptions> paymentOptions)
     {
         payOpts = paymentOptions.Value;
-        StripeConfiguration.ApiKey = payOpts.SecurityCredentials["SecretKey"];
+        StripeConfiguration.ApiKey = payOpts.SecurityCredentials[CredentialKeys.Stripe.SecretKey];
     }
 
-    public string PublishableKey => payOpts.SecurityCredentials["PublishableKey"];
+    public string PublishableKey => payOpts.SecurityCredentials[CredentialKeys.Stripe.PublishableKey];
 
     #region Payment Transactions
 

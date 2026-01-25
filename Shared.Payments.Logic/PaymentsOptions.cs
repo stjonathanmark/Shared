@@ -1,5 +1,5 @@
 ﻿
-namespace Shared.Payments.Logic;
+namespace Shared.Payments;
 
 public class PaymentsOptions
 {

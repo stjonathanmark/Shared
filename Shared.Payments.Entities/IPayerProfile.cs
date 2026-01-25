@@ -1,4 +1,4 @@
-﻿namespace Shared.Payments.Entities;
+﻿namespace Shared.Payments;
 
 public interface IPayerProfile<TPayerAddress>
     where TPayerAddress : IPayerAddress

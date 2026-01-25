@@ -1,6 +1,6 @@
 ﻿using Shared.Payements;
 
-namespace Shared.Payments.Entities;
+namespace Shared.Payments;
 
 public class PaymentMethod<TUserId> : BasePaymentMethod<TUserId>
     where TUserId : IEquatable<TUserId>
